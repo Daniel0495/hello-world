@@ -1,0 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+Xcero = 0.5
+T = 1
+N = 2**8
+dt = T/N
+B = [0]*(N+2)
+t = [0]
+x_sol = [Xcero]
+x_aprox = [Xcero]
+Xtemp = Xcero
+q = 0
+
+
+for i in  range(0, N+1):
+    s = i*dt
+    t.append(s)
+    l = q + np.random.normal(0, 1) * (dt) ** (1 / 2)
+    q = l
+    B[i] = B[i] + l
+    x_soltemp = (Xcero**(1/3) + (1/3)*B[i])**3
+    x_sol.append(x_soltemp)
+    r = Xtemp + (1/3)*(Xtemp**(1/3))*dt + (Xtemp**(2/3))*(B[i] - B[i-1])
+    x_aprox.append(r)
+    Xtemp = r
+
+
+plt.plot(t, x_sol, 'black', label = "Solución explícita")
+plt.plot(t, x_aprox, 'r--', label = "Aproximación de Euler")
+plt.legend()
+plt.show()
